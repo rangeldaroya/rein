@@ -26,12 +26,12 @@ The table below shows the results of REIN compared to BPA and PSR on the ShapeNe
 <table>
 <tbody>
 <tr class="even">
-<td colspan='7' style="text-align: center;">ShapeNet</td>
+<td colspan='7'; style="text-align: center;">ShapeNet</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
-<td colspan='3' style="text-align: center;">Chamfer Distance</td>
-<td colspan='3' style="text-align: center;">Point Normal Similarity</td>
+<td colspan='3'; style="text-align: center;">Chamfer Distance</td>
+<td colspan='3'; style="text-align: center;">Point Normal Similarity</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Algorithm</td>
@@ -71,12 +71,12 @@ The table below shows the results of REIN compared to BPA and PSR on the ShapeNe
 </tr>
 <tr></tr>
 <tr class="even">
-<td colspan='7' style="text-align: center;">ModelNet10</td>
+<td colspan='7'; style="text-align: center;">ModelNet10</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
-<td colspan='3' style="text-align: center;">Chamfer Distance</td>
-<td colspan='3' style="text-align: center;">Point Normal Similarity</td>
+<td colspan='3'; style="text-align: center;">Chamfer Distance</td>
+<td colspan='3'; style="text-align: center;">Point Normal Similarity</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Algorithm</td>
