@@ -172,7 +172,7 @@ class GRU_plain(nn.Module):
 
         return output_raw
 
-def get_train_files(train_files, ctr, verts, edges, faces):
+def get_train_files(train_files, filepath, lines, ctr, verts, edges, faces):
 
     graph_curr = nx.Graph()
     graph_curr.add_edges_from(edges)
@@ -271,6 +271,20 @@ def get_filepath(dataset, path, lines, classname='all'):
         filepath = os.path.join(path, lines, 'blender_model.obj')
     return filepath
 
+def str2bool(v):
+    """
+    Convert string to bool for argument parsing in terminal
+    """
+    if isinstance(v, bool):
+       return v
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
+
+
 if __name__ == '__main__':
     # All necessary arguments are defined in args.py
     args = Args()
@@ -291,14 +305,14 @@ if __name__ == '__main__':
 
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--start', dest='start_epoch', help='start index of epoch', type=int)
-    parser.add_argument('--end', dest='end_epoch', help='number of epochs to run before stopping training', type=int)
-    parser.add_argument('--dataset', dest='dataset', help='dataset source for training', type=str)
+    parser.add_argument('--start', dest='start_epoch', help='start index of epoch', type=int, default=0)
+    parser.add_argument('--end', dest='end_epoch', help='number of epochs to run before stopping training', type=int, default=105)
+    parser.add_argument('--dataset', dest='dataset', help='dataset source for training', type=str, default='shapenet-split')
     # parser.add_argument('--ae_only', dest='ae_only', help='to train just ae or not', type=bool, default=False)
     parser.add_argument('--class', dest='classname', help='class to include in training (provision)', type=str, default='all')
     parser.add_argument('--toeval', dest='toeval', help='to evaluate chamfer distance, not train. for AE eval', type=bool, default=False)
     parser.add_argument('--ckptloc', dest='ckptloc', help='location of checkpoint loading and saving', type=str, default=None)
-    parser.add_argument('--pretrain', dest='pretrain', help='to pretrain?', type=int, default=None)
+    parser.add_argument('--pretrain', dest='pretrain', help='to pretrain?(y/n; defeault n)', type=str2bool, default=False)
     parser.add_argument('--pretrain_ae_path', dest='pretrain_ae_path', help='specify pretrained AE path', type=str, default=None)
     parser.add_argument('--pretrain_rnn_path', dest='pretrain_rnn_path', help='specify pretrained RNN path', type=str, default=None)
     parser.add_argument('--pretrain_output_path', dest='pretrain_output_path', help='specify pretrained Output path', type=str, default=None)
@@ -308,14 +322,7 @@ if __name__ == '__main__':
     dataset = args2.dataset
     train_ae_only = args2.ae_only
     toeval = args2.toeval
-
-    # to_pretrain = False
     to_pretrain = args2.pretrain
-    print('to_pretrain: ', to_pretrain)
-    if to_pretrain is None:
-        print('\n\n\nSPECIFY VALUE OF PRETRAIN!! (--pretrain)')
-        while True:  
-            pass
 
 
     if dataset == 'modelnet-1hull':
@@ -349,7 +356,6 @@ if __name__ == '__main__':
     for lines in f:
         lines = lines.strip()
 
-
         filepath = get_filepath(dataset, path, lines, classname=classname)
 
         try:
@@ -371,7 +377,7 @@ if __name__ == '__main__':
         edges = mesh.edges
         faces = mesh.faces
 
-        train_files, ctr = get_train_files(train_files, ctr, verts, edges, faces)
+        train_files, ctr = get_train_files(train_files, filepath, lines, ctr, verts, edges, faces)
         
     f.close()
     print('ctr: ', ctr)
@@ -431,17 +437,16 @@ if __name__ == '__main__':
                         has_output=True, output_size=1, pred_pts=False).cuda()
 
     ### start training
-    if not toeval:
-        print('\n\nSTART TRAINING...\n\n')
-        print('RNN NETWORK SUMMARY: ')
-        if args.vertlatent==True:
-            summary(rnn, (args.max_num_node,3+args.latent_size))
-        elif rnn.latent_vec==True:
-            summary(rnn, (args.max_num_node,args.max_prev_node+args.latent_size))
-        else:
-            summary(rnn, (args.max_num_node,args.max_prev_node))
-        print('\n\nOUTPUT NETWORK SUMMARY: ')
-        summary(output, (args.max_prev_node, 1))
+    print('\n\nSTART TRAINING...\n\n')
+    print('RNN NETWORK SUMMARY: ')
+    if args.vertlatent==True:
+        summary(rnn, (args.max_num_node,3+args.latent_size))
+    elif rnn.latent_vec==True:
+        summary(rnn, (args.max_num_node,args.max_prev_node+args.latent_size))
+    else:
+        summary(rnn, (args.max_num_node,args.max_prev_node))
+    print('\n\nOUTPUT NETWORK SUMMARY: ')
+    summary(output, (args.max_prev_node, 1))
 
 
 
