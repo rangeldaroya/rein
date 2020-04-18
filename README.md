@@ -4,11 +4,16 @@ REIN: Flexible Mesh Generation from Point Clouds to be presented at the 2020 WiC
 This is the code implementation for the Recurrent Edge Inference Network (REIN) to generate meshes from point clouds.
 
 ## Dataset
+- Download the dataset ![here](https://drive.google.com/file/d/1DTUWK-Xn9-I4R5_GcehIvcFn2y_YLa7X/view?usp=sharing)
+
 
 ## Train the Model
-- Train the model from scratch (as a default, it will train on the dataset ShapeNet Split) by running <code>python3 main.py</code>
-  - To specify a specific dataset to train on, run <code>python3 main.py --dataset 'shapenet-split'</code>
-  - To load a pretrained model, 
+- Train the model from scratch (as a default, it will train on the dataset ShapeNet Split): <code>python3 main.py</code>
+  - To specify a specific dataset to train on: <code>python3 main.py --dataset 'shapenet-split'</code>
+- To load and train on a pretrained model: <code>python3 main.py --pretrain True --pretrain_ae_path <ae_path> --pretrain_rnn_path <rnn_path> --pretrain_output_path <output_path></code>
+  - <code>ae_path</code> is the path for the autoencoder network
+  - <code>rnn_path</code> is the path for the rnn network
+  - <code>output_path</code> is the path for the output layer
 
 ## Network Model
 ![network architecture of REIN](https://github.com/rangeldaroya/rein/blob/master/images/network_architecture.png)
@@ -23,7 +28,7 @@ This is the code implementation for the Recurrent Edge Inference Network (REIN) 
 | PSR         |     0.0871 |     0.0227 |     0.0200 |     0.5795 |     0.7762 |     0.7367 |
 | Ours (REIN) | **0.0003** | **0.0033** | **0.0028** | **0.8317** | **0.8181** | **0.8313** |
 |             |            |            |            |            |            |            |
-|               ModelNet                                                                    |
+|               ModelNet10                                                                    |
 | Algorithm   |       Hull |  Butterfly |   Midpoint |       Hull |  Butterfly |   Midpoint |
 | BPA         |     0.0088 |     0.0106 |     0.0573 |     0.7210 |     0.8062 |     0.6032 |
 | PSR         |     0.0292 |     0.0224 |     0.0292 | **0.8273** |     0.7938 |     0.7583 |
