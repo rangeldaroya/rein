@@ -20,20 +20,103 @@ This is the code implementation for the Recurrent Edge Inference Network (REIN) 
 ## Sample Mesh Generation on Test Set
 
 ### Quantitative Results on ShapeNet and ModelNet10
-|             |            |            |            |            |            |            |
-| :---------- | ---------: | ---------: | ---------: | ---------: | ---------: | ---------: |
-|                                    ShapeNet                                               |
-| Algorithm   |       Hull |  Butterfly |   Midpoint |       Hull |  Butterfly |   Midpoint |
-| BPA         |     0.0052 |     0.0075 |     0.0177 |     0.6224 |     0.8143 |     0.6995 |
-| PSR         |     0.0871 |     0.0227 |     0.0200 |     0.5795 |     0.7762 |     0.7367 |
-| Ours (REIN) | **0.0003** | **0.0033** | **0.0028** | **0.8317** | **0.8181** | **0.8313** |
-|             |            |            |            |            |            |            |
-|               ModelNet10                                                                    |
-| Algorithm   |       Hull |  Butterfly |   Midpoint |       Hull |  Butterfly |   Midpoint |
-| BPA         |     0.0088 |     0.0106 |     0.0573 |     0.7210 |     0.8062 |     0.6032 |
-| PSR         |     0.0292 |     0.0224 |     0.0292 | **0.8273** |     0.7938 |     0.7583 |
-| Ours (REIN) | **0.0050** | **0.0056** | **0.0073** |     0.8259 | **0.8285** | **0.8288** |
+The table below shows the results of REIN compared to BPA and PSR on the ShapeNet and ModelNet10 datasets. BPA and PSR meshes were generated with Meshlab computed normals.
 
+<div id="tab:shapenetmodelnetresults">
+<table>
+<tbody>
+<tr class="even">
+<td colspan='7' style="text-align: center;">ShapeNet</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td colspan='3' style="text-align: center;">Chamfer Distance</td>
+<td colspan='3' style="text-align: center;">Point Normal Similarity</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Algorithm</td>
+<td style="text-align: right;">Hull</td>
+<td style="text-align: right;">Butterfly</td>
+<td style="text-align: right;">Midpoint</td>
+<td style="text-align: right;">Hull</td>
+<td style="text-align: right;">Butterfly</td>
+<td style="text-align: right;">Midpoint</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BPA</td>
+<td style="text-align: right;">0.0052</td>
+<td style="text-align: right;">0.0075</td>
+<td style="text-align: right;">0.0177</td>
+<td style="text-align: right;">0.6224</td>
+<td style="text-align: right;">0.8143</td>
+<td style="text-align: right;">0.6995</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PSR</td>
+<td style="text-align: right;">0.0871</td>
+<td style="text-align: right;">0.0227</td>
+<td style="text-align: right;">0.0200</td>
+<td style="text-align: right;">0.5795</td>
+<td style="text-align: right;">0.7762</td>
+<td style="text-align: right;">0.7367</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ours (REIN)</td>
+<td style="text-align: right;"><strong>0.0003</strong></td>
+<td style="text-align: right;"><strong>0.0033</strong></td>
+<td style="text-align: right;"><strong>0.0028</strong></td>
+<td style="text-align: right;"><strong>0.8317</strong></td>
+<td style="text-align: right;"><strong>0.8181</strong></td>
+<td style="text-align: right;"><strong>0.8313</strong></td>
+</tr>
+<tr></tr>
+<tr class="even">
+<td colspan='7' style="text-align: center;">ModelNet10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td colspan='3' style="text-align: center;">Chamfer Distance</td>
+<td colspan='3' style="text-align: center;">Point Normal Similarity</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Algorithm</td>
+<td style="text-align: right;">Hull</td>
+<td style="text-align: right;">Butterfly</td>
+<td style="text-align: right;">Midpoint</td>
+<td style="text-align: right;">Hull</td>
+<td style="text-align: right;">Butterfly</td>
+<td style="text-align: right;">Midpoint</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BPA</td>
+<td style="text-align: right;">0.0088</td>
+<td style="text-align: right;">0.0106</td>
+<td style="text-align: right;">0.0573</td>
+<td style="text-align: right;">0.7210</td>
+<td style="text-align: right;">0.8062</td>
+<td style="text-align: right;">0.6032</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PSR</td>
+<td style="text-align: right;">0.0292</td>
+<td style="text-align: right;">0.0224</td>
+<td style="text-align: right;">0.0292</td>
+<td style="text-align: right;"><strong>0.8273</strong></td>
+<td style="text-align: right;">0.7938</td>
+<td style="text-align: right;">0.7583</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ours (REIN)</td>
+<td style="text-align: right;"><strong>0.0050</strong></td>
+<td style="text-align: right;"><strong>0.0056</strong></td>
+<td style="text-align: right;"><strong>0.0073</strong></td>
+<td style="text-align: right;">0.8259</td>
+<td style="text-align: right;"><strong>0.8285</strong></td>
+<td style="text-align: right;"><strong>0.8288</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
 ### Qualitative Results on ShapeNet Patched
 
 The image below shows sample results of REIN by reconstructing by parts on the ShapeNet dataset. The generated meshes are compared with results from Ball Pivoting Algorithm (BPA) and Poisson Surface Reconstruction (PSR).
