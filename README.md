@@ -117,6 +117,7 @@ The table below shows the results of REIN compared to BPA and PSR on the ShapeNe
 </tbody>
 </table>
 </div>
+
 ### Qualitative Results on ShapeNet Patched
 
 The image below shows sample results of REIN by reconstructing by parts on the ShapeNet dataset. The generated meshes are compared with results from Ball Pivoting Algorithm (BPA) and Poisson Surface Reconstruction (PSR).
