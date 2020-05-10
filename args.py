@@ -13,33 +13,8 @@ class Args():
         # The dependent Bernoulli sequence version of GraphRNN
         self.note = 'GraphRNN_RNN'
 
-        ## for comparison, removing the BFS compoenent
-        # self.note = 'GraphRNN_MLP_nobfs'
-        # self.note = 'GraphRNN_RNN_nobfs'
-
-        ### Which dataset is used to train the model
-        # self.graph_type = 'DD'
-        # self.graph_type = 'caveman'
-        # self.graph_type = 'caveman_small'
-        # self.graph_type = 'caveman_small_single'
-        # self.graph_type = 'community4'
-        # self.graph_type = 'grid'
-        # self.graph_type = 'grid_small'
-        # self.graph_type = 'ladder_small'
-
-        # self.graph_type = 'enzymes'
         self.graph_type = 'meshes'
-        # self.graph_type = 'enzymes_small'
-        # self.graph_type = 'barabasi'
-        # self.graph_type = 'barabasi_small'
-        # self.graph_type = 'citeseer'
-        # self.graph_type = 'citeseer_small'
 
-        # self.graph_type = 'barabasi_noise'
-        # self.noise = 10
-        #
-        # if self.graph_type == 'barabasi_noise':
-        #     self.graph_type = self.graph_type+str(self.noise)
 
         # if none, then auto calculate
         self.max_num_node = None # max number of nodes in a graph
@@ -82,11 +57,10 @@ class Args():
 
         ### training config
         self.num_workers = 0 # num workers to load data, default 4
-        # self.batch_ratio = 9 # how many batches of samples per epoch, default 32, e.g., 1 epoch = 32 batches
         self.batch_ratio = 32 # how many batches of samples per epoch, default 32, e.g., 1 epoch = 32 batches   #NOTE: original
         self.epochs = 10000 # now one epoch means self.batch_ratio x batch_size
         self.epochs_test_start = 100
-        # self.epochs_test = 100
+
         self.epochs_test = 10000 #NOTE: Originally 100
         self.epochs_log = 1
         self.epochs_save = 100
@@ -100,12 +74,6 @@ class Args():
         ### output config
         # self.dir_input = "/dfs/scratch0/jiaxuany0/"
         self.dir_input = "./"
-        #self.model_save_path = self.dir_input+'model_save_1hull_latentonly/' # only for nll evaluation
-        #self.graph_save_path = self.dir_input+'graphs_1hull_latentonly/'
-        #self.model_save_path = self.dir_input+'model_save_1hull_latentonly_2/' # only for nll evaluation
-        #self.graph_save_path = self.dir_input+'graphs_1hull_latentonly_2/'
-        #self.model_save_path = self.dir_input+'model_save_1hull_vertlatent/' # only for nll evaluation
-        #self.graph_save_path = self.dir_input+'graphs_1hull_vertlatent/'
         self.model_save_path = self.dir_input+'model_save_modelnet_vertlatent_wbfs_zouty2/' # only for nll evaluation
         self.graph_save_path = self.dir_input+'graphs_modelnet_vertlatent_wbfs_zouty2/'
         self.figure_save_path = self.dir_input+'figures/'
