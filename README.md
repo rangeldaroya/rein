@@ -1,5 +1,5 @@
 # REIN
-REIN: Flexible Mesh Generation from Point Clouds to be presented at the 2020 WiCV CVPR Workshop.
+REIN: Flexible Mesh Generation from Point Clouds to be presented at the 2020 WiCV CVPR Workshop. Video can be found [here](https://youtu.be/ksIrWHyS39c).
 
 This is the code implementation for the Recurrent Edge Inference Network (REIN) to generate meshes from point clouds.
 
