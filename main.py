@@ -14,7 +14,6 @@ from torch.nn.utils.rnn import pad_packed_sequence, pack_padded_sequence
 
 from collections import OrderedDict
 import math
-import numpy as np
 import time
 
 import networkx as nx
@@ -33,12 +32,16 @@ from tensorboard_logger import configure, log_value
 import scipy.misc
 import time as tm
 
-from utils import *
-from data import *
+# from utils import *
+from data import Graph_sequence_sampler_pytorch, binary_cross_entropy_weight, encode_adj, bfs_seq
 from args import Args
-
-
 from pointnet import AutoencoderPoint, AutoencoderPoint2
+
+
+from trimesh.io.export import export_mesh
+from trimesh.base import Trimesh
+from trimesh.repair import *
+import trimesh
 
 # from train import *
 from torchsummary import summary
@@ -49,6 +52,7 @@ import argparse
 from progressbar import ProgressBar
 
 import os
+import numpy as np
 
 import visdom
 vis = visdom.Visdom(port=8888, env='Points Autoencoder')
@@ -172,7 +176,7 @@ class GRU_plain(nn.Module):
 
         return output_raw
 
-def get_train_files(train_files, filepath, lines, ctr, verts, edges, faces):
+def get_train_files(train_files, filepath, lines, ctr, verts, edges, faces, totverts):
 
     graph_curr = nx.Graph()
     graph_curr.add_edges_from(edges)
@@ -184,7 +188,7 @@ def get_train_files(train_files, filepath, lines, ctr, verts, edges, faces):
     x_batch = np.zeros((500, 500))  # here zeros are padded for small graph
     x_batch[0,:] = 1 # the first input token is all ones
     
-    len_batch = adj_copy.shape[0]
+    # len_batch = adj_copy.shape[0]
     x_idx = np.random.permutation(adj_copy.shape[0])
     adj_copy = adj_copy[np.ix_(x_idx, x_idx)]   #changes order of adj_copy elements randomly but maintains same group of elements per row and column (same number of 1s in every row and column as before)
     
@@ -210,7 +214,8 @@ def get_train_files(train_files, filepath, lines, ctr, verts, edges, faces):
     if np.array(mesh.vertices).shape[0] != xyz.shape[0]:
         print('numverts: ', np.array(mesh.vertices).shape[0], 'xyz.shape: ', xyz.shape)
         print('incosistent numcoor filepath: ', filepath)
-        continue
+        # continue
+        return train_files, ctr, totverts
     
     if (np.array(mesh.vertices).shape[0] <= 500):
         train_files.append(filepath)
@@ -245,7 +250,7 @@ def get_train_files(train_files, filepath, lines, ctr, verts, edges, faces):
             train_files.append(os.path.join(path, lines[:-4] + '_splitmdpt_deform_c.obj'))
             ctr += 1
         ctr += 1
-    return train_files, ctr
+    return train_files, ctr, totverts
 
 def get_filepath(dataset, path, lines, classname='all'):
     if dataset == 'modelnet-1hull':     #provision for modelnet40
@@ -377,11 +382,12 @@ if __name__ == '__main__':
         edges = mesh.edges
         faces = mesh.faces
 
-        train_files, ctr = get_train_files(train_files, filepath, lines, ctr, verts, edges, faces)
+        train_files, ctr, totverts = get_train_files(train_files, filepath, lines, ctr, verts, edges, faces, totverts)
+        
         
     f.close()
     print('ctr: ', ctr)
-    print('\n\ntotverts: ', totverts)
+    # print('\n\ntotverts: ', totverts)
     # hf = h5py.File(os.path.join(path, 'traindata_500v.hdf5'), 'r')
     hf = None
     print('\n\n\nnum total train files: ', len(train_files))        
@@ -535,15 +541,6 @@ if __name__ == '__main__':
                     vis.scatter(X=pts.transpose(2,1).contiguous()[0].data.cpu(), win='INPUT', opts=dict(title='INPUT', markersize=2))
                     vis.scatter(X=pred_pts.transpose(2,1).contiguous()[0].data.cpu(), win='INPUT_RECONSTRUCTED', opts=dict(title='INPUT_RECONSTRUCTED', markersize=2))
                 
-            if rnn.pred_pts==True:
-                # x_unsorted, y_unsorted, y_len_unsorted, points, mesh_pts = next(data_loader)
-                points = data['pts']
-                points = Variable(points).cuda()
-                points = points.transpose(2,1).float()
-                pred_pts, endpts = autoencoder(points)
-                latent_pts = endpts['embedding']
-
-
 
             y_len_max = max(y_len_unsorted)
             x_unsorted = x_unsorted[:, 0:y_len_max, :]
@@ -611,7 +608,7 @@ if __name__ == '__main__':
             
             loss_adj = binary_cross_entropy_weight(y_pred, output_y)
             loss_pts = 0
-            elif rnn.latent_vec==True:
+            if rnn.latent_vec==True:
                 loss_forward, _, loss_backward, _ = ChamferLoss()(pred_pts.transpose(2,1), pts.transpose(2,1))
                 loss_pts = torch.mean(loss_forward+loss_backward)*10e2
             else:
