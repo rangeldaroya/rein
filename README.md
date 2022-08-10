@@ -4,7 +4,7 @@ REIN: Flexible Mesh Generation from Point Clouds to be presented at the 2020 WiC
 This is the code implementation for the Recurrent Edge Inference Network (REIN) to generate meshes from point clouds.
 
 ## Dataset
-- Download the dataset [here](https://drive.google.com/file/d/1DTUWK-Xn9-I4R5_GcehIvcFn2y_YLa7X/view?usp=sharing)
+- Download the dataset [here](https://1drv.ms/u/s!AvF6swdBjYzAg5lQ20tVJfjwa8D_Hw?e=TuCXba)
 
 
 ## Train the Model
