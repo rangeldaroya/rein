@@ -3,7 +3,7 @@ apturl==0.5.2
 asn1crypto==0.24.0
 astor==0.7.1
 Brlapi==0.6.6
-certifi==2018.1.18
+certifi==2022.12.7
 chardet==3.0.4
 Click==7.0
 command-not-found==0.3
