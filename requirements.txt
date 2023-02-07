@@ -8,7 +8,7 @@ chardet==3.0.4
 Click==7.0
 command-not-found==0.3
 community==1.0.0b1
-cryptography==2.3
+cryptography==39.0.1
 cupshelpers==1.0
 cycler==0.10.0
 decorator==4.4.0
