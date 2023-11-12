@@ -42,7 +42,7 @@ matplotlib==3.0.3
 mock==3.0.5
 netifaces==0.10.4
 networkx==2.3
-numpy==1.16.3
+numpy==1.22.0
 oauth==1.0.1
 olefile==0.45.1
 pandas==0.24.2
